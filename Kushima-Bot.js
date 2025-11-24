@@ -66,9 +66,9 @@ const commands = [
 ].map(cmd => cmd.toJSON());
 
 // -----------------------------
-// Discord APIにコマンド登録
+// Discord APIにコマンド登録（token を環境変数で）
 // -----------------------------
-const rest = new REST({ version: "10" }).setToken(""); // ← 自分のBotトークン
+const rest = new REST({ version: "10" }).setToken(process.env.BOT_TOKEN);
 
 (async () => {
     try {
@@ -107,6 +107,7 @@ client.on("interactionCreate", async interaction => {
             const month = today.getMonth() + 1;
             const day = today.getDate();
             const mentionRoleId = "1400818424384454748";
+
             const replyMessage = `<@&${mentionRoleId}>
 【運行予定-Schedule】
 ${line}で運行予定です。
@@ -119,13 +120,11 @@ ${line}で運行予定です。
         } catch (err) {
             console.error("Interaction Error:", err);
 
-            // ここで reply() は使わず、editReply を優先
             try {
-                if (interaction.deferred || interaction.replied) {
-                    await interaction.editReply({ content: "⚠️ エラーが発生しました  みずほ(COO)に連絡してください", flags: 64 });
-                } else {
-                    await interaction.reply({ content: "⚠️ エラーが発生しました　みずほ(COO)に連絡してください", flags: 64 });
-                }
+                await interaction.editReply({
+                    content: "⚠️ エラーが発生しました みずほ(COO)に連絡してください",
+                    flags: 64
+                });
             } catch (_) {
                 console.error("二重応答回避: エラー通知できず");
             }
@@ -136,4 +135,6 @@ ${line}で運行予定です。
 // -----------------------------
 // Botログイン
 // -----------------------------
-client.login("");
+client.login(process.env.BOT_TOKEN);
+
+
