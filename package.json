@@ -1,8 +1,11 @@
 {
-  "name": "kushima-bot",
+  "name": "kushima-Bot",
   "version": "1.0.0",
-  "main": "bot.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node Kushima-Bot.js"
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.15.3"
   }
 }
